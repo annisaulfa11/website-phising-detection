@@ -1,4 +1,4 @@
-#### liblary untuk memanggil model pickle ####
+#### liblary untuk memanggil model joblib (untuk menyimpan model)####
 import joblib
 ### END ###
 
@@ -41,7 +41,7 @@ def read_root():
 
 ### Halaman untuk predict ###
 # @app.get('/predict/{feature}') adalah routes list yang nantinya di akses yang membawa pramater query feature ###
-# async def predict(feauteres): membuat method yang membawa paramater features unutuk menampung hasil parameter yang di tentukan #
+# async def predict(feauteres): membuat method yang membawa paramater features untuk menampung hasil parameter yang di tentukan #
 # X_predict = [] suatu variable untuk menampung array kosong yang nantinya akan diisi value dari request data #
 # X_predict.append(str(feauteres)) suatu variable yang nantinya akan di masukan ke X_predict = [] untuk di tampung ke dalam array #
 # y_Predict = phish_model_ls.predict(X_predict) memanggil model yang sudah di definisakn di atas untuk predict hasil dari X_predict yang ada di dalam array #
