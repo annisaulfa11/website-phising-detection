@@ -13,7 +13,7 @@ import requests
 
 import numpy as np
 
-# Returns the domain of the url
+# Mengembalikan domain dari url
 def Domain(url):
     urlData = urlparse(url)
     urlLocation=urlData.netloc
@@ -23,7 +23,7 @@ def Domain(url):
     else:
         return 'NotFound'
 
-# Checks whether the url contains ip address
+# Memeriksa apakah url berisi alamat ip
 def ipURL(url):
     try:
         ipaddress.ip_address(url)
@@ -32,7 +32,7 @@ def ipURL(url):
         isIP = 0
     return isIP
 
-# Does the url contain @ symbol
+# Apakah url berisi simbol @
 def haveAtSymbol(url):
     if "@" in url:
         at = 1
@@ -40,7 +40,7 @@ def haveAtSymbol(url):
         at = 0
     return at
 
-# Length of url
+# Panjang url
 def Length(url):
     if len(url) < 55:
         length = 0
@@ -48,14 +48,14 @@ def Length(url):
         length = 1
     return length
 
-# No. of Subpages in url
+# Jumlah Subhalaman di url
 def pathDepth(url):
     urlData = urlparse(url)
     urlPath = urlData.path
     depth = urlPath.count('/')
     return depth
 
-# Redirection present in url
+# Pengalihan ada di url (Redirection present in url)
 def redirectPresent(url):
     pos = url.rfind('//')
     if pos > 7:
@@ -63,7 +63,7 @@ def redirectPresent(url):
     else:
         return 0
 
-# Scheme of url
+# Skema url
 def Scheme(url):
     urlData = urlparse(url)
     urlScheme = urlData.scheme
@@ -81,7 +81,7 @@ shortening_services = r"bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|
                       r"prettylinkpro\.com|scrnch\.me|filoops\.info|vzturl\.com|qr\.net|1url\.com|tweez\.me|v\.gd|" \
                       r"tr\.im|link\.zip\.net"
 
-# Whether a url is a shortened URL
+# Apakah url adalah URL singkat
 def urlShortening(url):
     match=re.search(shortening_services,url)
     if match:
@@ -89,8 +89,8 @@ def urlShortening(url):
     else:
         return 0
 
-# Presence of '-' in url
-# generally sites dont use '-' to seperate the words of site
+# Kehadiran '-' di url
+# Umumnya situs tidak menggunakan '-' untuk memisahkan kata-kata situs
 def presenceOfDash(url):
     urlLocation = urlparse(url).netloc
     if '-' in urlLocation:
@@ -98,7 +98,7 @@ def presenceOfDash(url):
     else:
         return 0
 
-# Get Domain DNS related details using whois server
+#Dapatkan detail terkait DNS Domain menggunakan server whois
 def domainDataExtract(url):
     url = urlparse(url).netloc
     dictURL={}
@@ -119,11 +119,11 @@ def domainDataExtract(url):
             break
     return dictURL
 
-# Rank by traffic on Alexa database
+# Peringkat berdasarkan lalu lintas di database Alexa
 def rankByTraffic(url):
     return 1
 
-# Survival time of domain: The difference between termination time and creation time (Domain_Age)  
+# Waktu bertahan domain: Perbedaan antara waktu penghentian dan waktu pembuatan (Domain_Age)  
 def domainAge(domainData):
     creation_date = domainData['Registered On']
     expiration_date = domainData['Expires On']
@@ -145,7 +145,7 @@ def domainAge(domainData):
             age = 0
         return age
 
-# End time of domain: The difference between termination time and current time (Domain_End) 
+# Waktu akhir domain: Perbedaan antara waktu penghentian dan waktu saat ini (Domain_End) 
 def domainEnd(domainData):
     expiration_date = domainData['Expires On']
     if isinstance(expiration_date,str):
@@ -166,7 +166,7 @@ def domainEnd(domainData):
             end = 1
         return end
 
-# IFrame Redirection
+# Pengalihan IFrame
 def iframeRedirection(response):
     if response == "":
         return 1
@@ -176,7 +176,7 @@ def iframeRedirection(response):
         else:
             return 1
 
-# Effects of mouse over on status bar
+# Efek mouse over pada bilah status
 def StatusBarModification(response): 
     if response == "" :
         return 1
@@ -186,7 +186,7 @@ def StatusBarModification(response):
         else:
             return 0
 
-# Checks whether right click is enabled or disabled
+# Memeriksa apakah klik kanan diaktifkan atau dinonaktifkan
 def rightClickEnable_Disable(response):
     if response == "":
         return 1
@@ -196,7 +196,7 @@ def rightClickEnable_Disable(response):
         else:
             return 1
 
-# The number of forwardings a page goes through
+# Jumlah penerusan yang dilalui halaman
 def forwardHistory(response):
     if response == "":
         return 1
@@ -206,11 +206,11 @@ def forwardHistory(response):
         else:
             return 1
 
-#Function to extract features
+#Fungsi untuk mengekstrak fitur
 def featureAppending(url):
     features = []
     test_domain = Domain(url)
-    #Address bar based features
+    #Fitur berbasis bilah alamat
     features.append(ipURL(url))
     features.append(haveAtSymbol(url))
     features.append(Length(url))
@@ -220,7 +220,7 @@ def featureAppending(url):
     features.append(urlShortening(url))
     features.append(presenceOfDash(url))
     
-    #DNS based features
+    #Fitur berbasis DNS
     dns = 0
     domainData={}
     try:
@@ -234,7 +234,7 @@ def featureAppending(url):
     features.append(1 if dns == 1 else domainAge(domainData))
     features.append(1 if dns == 1 else domainEnd(domainData))
     
-    #Javascript based features
+    #Fitur berbasis Javascript
     try:
         response = requests.get(url)
     except:

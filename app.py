@@ -1,4 +1,4 @@
-#### library untuk memanggil model pickle ####
+#### liblary untuk memanggil model joblib (untuk menyimpan model)####
 import joblib
 ### END ###
 
