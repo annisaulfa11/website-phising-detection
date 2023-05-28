@@ -5,7 +5,6 @@ import re
 from bs4 import BeautifulSoup
 import whois
 import urllib
-import urllib.request
 from datetime import datetime
 
 from lxml import etree
@@ -103,7 +102,7 @@ def presenceOfDash(url):
 def domainDataExtract(url):
     url = urlparse(url).netloc
     dictURL={}
-    html = BeautifulSoup(urllib.request.urlopen("https://www.whois.com/whois/" + url).read())
+    html = BeautifulSoup(urllib.request.urlopen("https://www.whois.com/whois/" + url).read(), features="lxml")
     domain_data_label = html.find_all(attrs={'class':'df-label'})
     
     if(len(domain_data_label)<5): return {}
@@ -122,16 +121,7 @@ def domainDataExtract(url):
 
 # Rank by traffic on Alexa database
 def rankByTraffic(url):
-    try:
-        url = urllib.parse.quote(url)
-        alexaDB = BeautifulSoup(urllib.request.urlopen("http://data.alexa.com/data?cli=10&dat=s&url=" + url).read(), "xml")
-        rank = int(alexaDB.find("REACH")['RANK'])
-    except TypeError:
-        return 1
-    if rank<100000:
-        return 0
-    else:
-        return 1
+    return 1
 
 # Survival time of domain: The difference between termination time and creation time (Domain_Age)  
 def domainAge(domainData):
